@@ -7,202 +7,257 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #141414;
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f0f0f;
             color: #ffffff;
             overflow-x: hidden;
+            /* subtle textured background */
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(229, 9, 20, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(50, 50, 50, 0.2) 0px, transparent 50%);
+            min-height: 100vh;
         }
 
-        /* Netflix-style Logo Font */
-        .brand-logo {
-            color: #E50914;
-            text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        /* --- Glassmorphism Utilities --- */
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
-        /* Custom Input Styling */
-        .netflix-input {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid #5e5e5e;
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: white;
             transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
-        .netflix-input:focus {
-            background: rgba(0, 0, 0, 0.9);
-            border-color: white;
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(229, 9, 20, 0.6);
             outline: none;
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.2);
         }
 
-        /* The Hero Background Vignette */
-        .hero-bg {
-            background-image: linear-gradient(to top, #141414 10%, transparent 90%),
-                              linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%),
-                              url('https://images.unsplash.com/photo-1574267432553-4b4628081c31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover;
-            background-position: center;
+        .glass-btn {
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.9), rgba(180, 0, 10, 0.95));
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Custom Scrollbar for logs */
-        .console-scroll::-webkit-scrollbar {
-            width: 6px;
+        /* --- Ambient Orbs (Background Animation) --- */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 10s infinite ease-in-out;
+            opacity: 0.4;
         }
-        .console-scroll::-webkit-scrollbar-track {
-            background: #1e1e1e;
-        }
-        .console-scroll::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 3px;
+        .orb-1 { width: 300px; height: 300px; background: #520408; top: 10%; left: 20%; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: #1a1a1a; top: 40%; right: 10%; animation-delay: -2s; }
+        .orb-3 { width: 200px; height: 200px; background: #3d0000; bottom: 10%; left: 30%; animation-delay: -4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
         }
 
-        /* Animations */
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; border: 1px solid #1a1a1a; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        .brand-text {
+            background: linear-gradient(to right, #ff4b5c, #E50914);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen relative">
+
+    <!-- Ambient Background Elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <!-- Noise overlay for texture -->
+        <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');"></div>
+    </div>
 
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/80 to-transparent px-4 py-4 md:px-12 flex justify-between items-center">
-        <div class="text-3xl brand-logo cursor-pointer">Coolboyistan</div>
+    <nav class="fixed w-full z-50 transition-all duration-300 glass-nav px-4 py-4 md:px-12 flex justify-between items-center">
+        <div class="text-3xl brand-text cursor-pointer drop-shadow-lg tracking-wider">Coolboyistan</div>
         <div class="flex items-center gap-4 text-sm font-medium text-gray-300">
-            <a href="#" class="hover:text-white transition hidden sm:block">Home</a>
-            <a href="#" class="hover:text-white transition hidden sm:block"><i>Movie Recomendations [COMING SOON]</i></a>
-            <div class=" h-8 rounded bg-red-600 flex items-center justify-center text-white font-bold cursor-pointer" style="width: fit-content; padding-left: 8px; padding-right: 8px;">
+            <a href="#" class="hover:text-white transition hidden sm:block hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">Home</a>
+            <a href="#" class="hover:text-white transition hidden sm:block hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"><i>Movie Recomendations [COMING SOON]</i></a>
+            <!-- Restored original badge content -->
+            <div class="glass-panel px-4 py-1.5 rounded bg-red-600/20 border border-red-500/50 flex items-center justify-center text-white font-bold cursor-pointer text-xs md:text-sm whitespace-nowrap">
                 ANY MOVIES WORK BTW, JUST TO CLEAR THIS UP
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Area -->
-    <div class="relative min-h-screen flex flex-col">
+    <!-- Main Content -->
+    <main class="relative flex-grow flex flex-col items-center justify-center pt-24 px-4 pb-12 w-full max-w-7xl mx-auto z-10">
         
-        <!-- Hero Section / Input Area -->
-        <div class="hero-bg flex-grow flex flex-col justify-center items-center px-4 pt-20 pb-10">
+        <!-- Hero Section -->
+        <div class="w-full max-w-4xl text-center space-y-8 fade-in" style="animation-delay: 0.1s;">
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-2xl leading-tight">
+                Unlimited movies, TV shows, and more. <br><span class="text-gray-400 italic font-light">CRAZY, right?</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-200 drop-shadow-md">
+                Watch anywhere. Enter an TMBD ID to start streaming. <a class="underline decoration-red-500 hover:text-red-400 transition" href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">TMBD</a>.
+            </p>
             
-            <div class="w-full max-w-4xl z-10 text-center space-y-6 fade-in">
-                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">
-                    Unlimited movies, TV shows, and more. <i>CRAZY, right?</i>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-200 drop-shadow-md">
-                    Watch anywhere. Enter an TMBD ID to start streaming. <a class="underline" href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">TMBD</a>.
-                </p>
-
-                <!-- Toggle Type -->
-                <div class="flex justify-center gap-6 mb-8 text-lg font-bold">
-                    <button onclick="switchMode('movie')" id="btn-movie" class="border-b-4 border-[#E50914] text-white pb-1 transition hover:opacity-80">Movies</button>
-                    <button onclick="switchMode('tv')" id="btn-tv" class="border-b-4 border-transparent text-gray-400 pb-1 hover:text-white transition">TV Shows</button>
-                </div>
-
-                <!-- Input Forms Container -->
-                <div class="bg-black/80 p-6 md:p-8 rounded-lg shadow-2xl backdrop-blur-sm max-w-2xl mx-auto border border-gray-800">
-                    
-                    <!-- Movie Form -->
-                    <div id="movie-form" class="flex flex-col md:flex-row gap-3">
-                        <div class="relative w-full">
-                            <label class="absolute -top-2 left-3 bg-red-600 text-xs px-1 rounded font-bold">TMDB ID</label>
-                            <input type="number" id="movieId" placeholder="e.g. 299534 (Avengers)" class="netflix-input w-full p-4 rounded h-14 text-lg placeholder-gray-500">
-                        </div>
-                        <button onclick="playContent('movie')" class="bg-[#E50914] hover:bg-[#b20710] text-white text-xl font-bold px-8 py-3 rounded h-14 flex items-center justify-center gap-2 transition transform hover:scale-105 min-w-[160px]">
-                            <span>Play</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </button>
-                    </div>
-
-                    <!-- TV Form (Hidden by default) -->
-                    <div id="tv-form" class="hidden flex flex-col gap-3">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <div class="relative w-full">
-                                <label class="absolute -top-2 left-2 text-gray-400 text-xs bg-black px-1">Show ID</label>
-                                <input type="number" id="showId" placeholder="ID (e.g. 1399)" class="netflix-input w-full p-3 rounded h-12 text-white placeholder-gray-500">
-                            </div>
-                            <div class="relative w-full">
-                                <label class="absolute -top-2 left-2 text-gray-400 text-xs bg-black px-1">Season</label>
-                                <input type="number" id="season" placeholder="Seas." min="1" class="netflix-input w-full p-3 rounded h-12 text-white placeholder-gray-500">
-                            </div>
-                            <div class="relative w-full">
-                                <label class="absolute -top-2 left-2 text-gray-400 text-xs bg-black px-1">Episode</label>
-                                <input type="number" id="episode" placeholder="Ep." min="1" class="netflix-input w-full p-3 rounded h-12 text-white placeholder-gray-500">
-                            </div>
-                        </div>
-                        <button onclick="playContent('tv')" class="bg-[#E50914] hover:bg-[#b20710] text-white text-xl font-bold px-8 py-3 rounded mt-2 flex items-center justify-center gap-2 transition w-full h-12">
-                            <span>Play Episode | &nbsp<i>Enjoy :)</i></span>
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Video Player Container (Hidden until play) -->
-            <div id="player-wrapper" class="w-full max-w-6xl mt-12 hidden fade-in z-20">
-                <div class="relative w-full pt-[56.25%] bg-black rounded-lg overflow-hidden shadow-2xl border border-gray-800 ring-1 ring-white/10">
-                    <iframe id="player" class="absolute top-0 left-0 w-full h-full" src="" frameborder="0" allowfullscreen allow="encrypted-media"></iframe>
-                </div>
+            <!-- Toggle Switch -->
+            <!-- Fixed alignment by using grid-cols-2 to force equal width buttons -->
+            <div class="inline-grid grid-cols-2 w-[280px] glass-panel rounded-full p-1.5 relative">
+                <!-- Slider Background -->
+                <div id="slider-bg" class="absolute top-1.5 left-1.5 w-[calc(50%-6px)] h-[calc(100%-12px)] bg-red-600 rounded-full transition-transform duration-300 ease-out shadow-[0_0_15px_rgba(229,9,20,0.5)]"></div>
                 
-                <!-- Console/Logs -->
-                <div class="mt-4 bg-black/60 backdrop-blur-md rounded border border-gray-800 p-4 max-w-full">
-                    <div class="text-xs font-mono text-gray-400 uppercase tracking-widest mb-2 border-b border-gray-700 pb-1">Debug Stream</div>
-                    <div id="messageArea" class="font-mono text-xs text-green-400 h-24 overflow-y-auto console-scroll space-y-1">
-                        <div class="opacity-50">> System ready... Waiting for input.</div>
+                <button onclick="switchMode('movie')" id="btn-movie" class="relative z-10 py-2 rounded-full text-sm font-bold text-white transition-colors duration-300 text-center">Movies</button>
+                <button onclick="switchMode('tv')" id="btn-tv" class="relative z-10 py-2 rounded-full text-sm font-bold text-gray-400 transition-colors duration-300 hover:text-white text-center">TV Shows</button>
+            </div>
+
+            <!-- Glass Card Container -->
+            <div class="glass-panel p-8 md:p-10 rounded-3xl mx-auto w-full max-w-2xl relative overflow-hidden group">
+                <!-- Shine effect on card -->
+                <div class="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 transition-all duration-1000 group-hover:left-[100%]"></div>
+                
+                <!-- Movie Form -->
+                <div id="movie-form" class="flex flex-col md:flex-row gap-4 transition-all duration-300">
+                    <div class="relative w-full group/input">
+                        <input type="number" id="movieId" placeholder=" " class="glass-input w-full p-4 rounded-xl h-14 text-lg peer placeholder-transparent">
+                        <label class="absolute left-4 top-4 text-gray-400 text-sm transition-all duration-200 peer-focus:-top-2.5 peer-focus:left-2 peer-focus:text-red-400 peer-focus:text-xs peer-focus:bg-[#1a1a1a] peer-focus:px-2 peer-focus:rounded peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-not-placeholder-shown:-top-2.5 peer-not-placeholder-shown:left-2 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:bg-[#1a1a1a] peer-not-placeholder-shown:px-2 peer-not-placeholder-shown:rounded pointer-events-none">TMDB ID</label>
+                        <!-- Added original placeholder as hint below or inside via JS, but glass UI works best with floating labels. 
+                             Adding the original text "e.g. 299534 (Avengers)" as a placeholder attribute for when focused -->
                     </div>
+                    <button onclick="playContent('movie')" class="glass-btn text-white text-xl font-bold px-8 py-3 rounded-xl h-14 flex items-center justify-center gap-2 transition transform active:scale-95 hover:brightness-110 min-w-[140px]">
+                        <span>Play</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- TV Form -->
+                <div id="tv-form" class="hidden flex flex-col gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="relative w-full">
+                            <input type="number" id="showId" placeholder="ID (e.g. 1399)" class="glass-input w-full p-3 rounded-xl h-12 text-center text-white placeholder-gray-500 font-mono">
+                            <div class="text-[10px] text-gray-500 mt-1 text-center tracking-widest uppercase">Show ID</div>
+                        </div>
+                        <div class="relative w-full">
+                            <input type="number" id="season" placeholder="Seas." class="glass-input w-full p-3 rounded-xl h-12 text-center text-white placeholder-gray-500 font-mono">
+                            <div class="text-[10px] text-gray-500 mt-1 text-center tracking-widest uppercase">Season</div>
+                        </div>
+                        <div class="relative w-full">
+                            <input type="number" id="episode" placeholder="Ep." class="glass-input w-full p-3 rounded-xl h-12 text-center text-white placeholder-gray-500 font-mono">
+                            <div class="text-[10px] text-gray-500 mt-1 text-center tracking-widest uppercase">Episode</div>
+                        </div>
+                    </div>
+                    <button onclick="playContent('tv')" class="glass-btn w-full mt-2 text-white text-lg font-bold px-8 py-3 rounded-xl h-12 flex items-center justify-center gap-2 transition transform active:scale-95 hover:brightness-110">
+                        Play Episode | &nbsp<i>Enjoy :)</i>
+                    </button>
                 </div>
             </div>
-            
         </div>
 
-        <!-- Footer -->
-        <footer class="bg-black/90 text-gray-500 py-8 px-12 text-xs md:text-sm border-t border-gray-900 z-10">
-            <div class="max-w-4xl mx-auto text-center">
-                <p>SEVERANCE - SHOW - 95396</p>
-                <p class="mt-2">Dont mind that hehe ^^^</p>
+        <!-- Video Player Section -->
+        <div id="player-wrapper" class="w-full max-w-6xl mt-16 hidden fade-in z-20">
+            <!-- Screen Glare/Reflection Effect -->
+            <div class="glass-panel p-1 rounded-2xl relative shadow-[0_20px_60px_-10px_rgba(0,0,0,0.8)]">
+                <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent rounded-2xl pointer-events-none z-30"></div>
+                <div class="relative w-full pt-[56.25%] bg-black rounded-xl overflow-hidden border border-white/5">
+                    <iframe id="player" class="absolute top-0 left-0 w-full h-full z-10" src="" frameborder="0" allowfullscreen allow="encrypted-media"></iframe>
+                </div>
             </div>
-        </footer>
 
-    </div>
+            <!-- Terminal/Console Log -->
+            <div class="mt-6 glass-panel rounded-xl overflow-hidden border border-gray-800/50">
+                <div class="bg-black/40 px-4 py-2 border-b border-white/5 flex items-center justify-between">
+                    <div class="flex gap-1.5">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                    </div>
+                    <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Debug Stream</span>
+                </div>
+                <div id="messageArea" class="font-mono text-xs p-4 h-32 overflow-y-auto console-scroll space-y-1.5 text-green-400/80">
+                    <div class="opacity-50 border-l-2 border-transparent pl-2">> System ready... Waiting for input.</div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Custom Modal for Errors -->
-    <div id="errorModal" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center px-4">
-        <div class="bg-[#181818] rounded-lg max-w-sm w-full p-6 text-center border-t-4 border-[#E50914] shadow-2xl">
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-nav text-gray-500 py-6 px-12 text-xs md:text-sm text-center relative z-10 border-t border-white/5">
+        <p>SEVERANCE - SHOW - 95396</p>
+        <p class="mt-2">Dont mind that hehe ^^^</p>
+    </footer>
+
+    <!-- Glass Modal for Errors -->
+    <div id="errorModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center px-4 transition-opacity duration-300">
+        <div class="glass-panel p-8 rounded-2xl max-w-sm w-full text-center border-t-4 border-red-600 shadow-[0_0_50px_rgba(229,9,20,0.3)] transform transition-all scale-100">
             <h3 class="text-xl font-bold text-white mb-2">erm, you forgot smth!!!</h3>
-            <p id="errorText" class="text-gray-300 mb-6">Something went wrong.</p>
-            <button onclick="closeModal()" class="bg-white text-black font-bold py-2 px-6 rounded hover:bg-gray-200 transition">Close</button>
+            <p id="errorText" class="text-gray-300 mb-6 text-sm">Something went wrong.</p>
+            <button onclick="closeModal()" class="w-full py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/10 transition font-medium">Close</button>
         </div>
     </div>
 
     <script>
+        // Update input placeholder on load to match original
+        document.getElementById('movieId').setAttribute('placeholder', 'e.g. 299534 (Avengers)');
+
         // --- UI Logic ---
         function switchMode(mode) {
+            const slider = document.getElementById('slider-bg');
             const movieBtn = document.getElementById('btn-movie');
             const tvBtn = document.getElementById('btn-tv');
             const movieForm = document.getElementById('movie-form');
             const tvForm = document.getElementById('tv-form');
 
             if (mode === 'movie') {
-                movieBtn.classList.add('border-[#E50914]', 'text-white');
-                movieBtn.classList.remove('border-transparent', 'text-gray-400');
-                tvBtn.classList.remove('border-[#E50914]', 'text-white');
-                tvBtn.classList.add('border-transparent', 'text-gray-400');
+                slider.style.transform = 'translateX(0)';
+                movieBtn.classList.add('text-white');
+                movieBtn.classList.remove('text-gray-400');
+                tvBtn.classList.remove('text-white');
+                tvBtn.classList.add('text-gray-400');
 
                 movieForm.classList.remove('hidden');
                 movieForm.classList.add('flex');
                 tvForm.classList.add('hidden');
             } else {
-                tvBtn.classList.add('border-[#E50914]', 'text-white');
-                tvBtn.classList.remove('border-transparent', 'text-gray-400');
-                movieBtn.classList.remove('border-[#E50914]', 'text-white');
-                movieBtn.classList.add('border-transparent', 'text-gray-400');
+                // Since using grid-cols-2, 100% transform works perfectly now
+                slider.style.transform = 'translateX(100%) translateX(6px)'; 
+                tvBtn.classList.add('text-white');
+                tvBtn.classList.remove('text-gray-400');
+                movieBtn.classList.remove('text-white');
+                movieBtn.classList.add('text-gray-400');
 
                 tvForm.classList.remove('hidden');
                 movieForm.classList.add('hidden');
@@ -210,17 +265,20 @@
             }
         }
 
-        // --- Custom Alert Logic ---
+        // --- Logic ---
         function showError(msg) {
             document.getElementById('errorText').innerText = msg;
-            document.getElementById('errorModal').classList.remove('hidden');
+            const modal = document.getElementById('errorModal');
+            modal.classList.remove('hidden');
+            // Tiny animation
+            modal.querySelector('div').classList.remove('scale-95', 'opacity-0');
+            modal.querySelector('div').classList.add('scale-100', 'opacity-100');
         }
 
         function closeModal() {
             document.getElementById('errorModal').classList.add('hidden');
         }
 
-        // --- Player Logic ---
         function playContent(type) {
             let src = '';
             
@@ -248,7 +306,6 @@
             const playerFrame = document.getElementById('player');
             playerFrame.src = src;
 
-            // Reveal player area nicely
             const container = document.getElementById('player-wrapper');
             container.classList.remove('hidden');
             
@@ -261,21 +318,19 @@
         function logMessage(text) {
             const messageArea = document.getElementById("messageArea");
             const div = document.createElement('div');
-            const time = new Date().toLocaleTimeString();
-            div.innerHTML = `<span class="text-gray-500">[${time}]</span> > ${text}`;
+            const time = new Date().toLocaleTimeString([], { hour12: false });
+            div.className = "border-l-2 border-green-500/50 pl-2 hover:bg-white/5 transition px-1 py-0.5 rounded";
+            div.innerHTML = `<span class="text-gray-500 mr-2 text-[10px]">[${time}]</span><span class="text-gray-200 shadow-green-500/20 drop-shadow-sm">> ${text}</span>`;
             messageArea.prepend(div);
         }
 
-        // --- Event Listener for Player Messages ---
+        // Listen for player events
         window.addEventListener("message", function (event) {
             if (typeof event.data === "string") {
                 try {
                     const data = JSON.parse(event.data);
-                    // Only log significant events to avoid spamming the beautiful UI
                     logMessage(`Progress: ${data.progress}% (${Math.floor(data.timestamp)}s)`);
-                } catch (e) {
-                    // Ignore non-JSON
-                }
+                } catch (e) {}
             }
         });
     </script>
