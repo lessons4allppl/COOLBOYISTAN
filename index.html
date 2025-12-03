@@ -252,8 +252,9 @@
                 movieForm.classList.add('flex');
                 tvForm.classList.add('hidden');
             } else {
-                // Since using grid-cols-2, 100% transform works perfectly now
-                slider.style.transform = 'translateX(100%) translateX(6px)'; 
+                // Now translating by 100% of the slider's own width (which is 104px)
+                // This positions it perfectly in the second column slot.
+                slider.style.transform = 'translateX(100%)'; 
                 tvBtn.classList.add('text-white');
                 tvBtn.classList.remove('text-gray-400');
                 movieBtn.classList.remove('text-white');
