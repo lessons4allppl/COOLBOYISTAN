@@ -14,14 +14,12 @@
             background-color: #0f0f0f;
             color: #ffffff;
             overflow-x: hidden;
-            /* subtle textured background */
             background-image: 
                 radial-gradient(at 0% 0%, rgba(229, 9, 20, 0.15) 0px, transparent 50%),
                 radial-gradient(at 100% 0%, rgba(50, 50, 50, 0.2) 0px, transparent 50%);
             min-height: 100vh;
         }
 
-        /* --- Glassmorphism Utilities --- */
         .glass-panel {
             background: rgba(20, 20, 20, 0.65);
             backdrop-filter: blur(16px);
@@ -58,7 +56,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* --- Ambient Orbs (Background Animation) --- */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -76,7 +73,6 @@
             50% { transform: translateY(-20px) scale(1.05); }
         }
 
-        /* --- Scrollbar --- */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; border: 1px solid #1a1a1a; }
@@ -102,7 +98,6 @@
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
-        <!-- Noise overlay for texture -->
         <div class="absolute inset-0 opacity-[0.03]" style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');"></div>
     </div>
 
@@ -112,7 +107,6 @@
         <div class="flex items-center gap-4 text-sm font-medium text-gray-300">
             <a href="#" class="hover:text-white transition hidden sm:block hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">Home</a>
             <a href="#" class="hover:text-white transition hidden sm:block hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"><i>Movie Recomendations [COMING SOON]</i></a>
-            <!-- Restored original badge content -->
             <div class="glass-panel px-4 py-1.5 rounded bg-red-600/20 border border-red-500/50 flex items-center justify-center text-white font-bold cursor-pointer text-xs md:text-sm whitespace-nowrap">
                 ANY MOVIES WORK BTW, JUST TO CLEAR THIS UP
             </div>
@@ -128,13 +122,11 @@
                 Unlimited movies, TV shows, and more. <br><span class="text-gray-400 italic font-light">CRAZY, right?</span>
             </h1>
             <p class="text-lg md:text-xl text-gray-200 drop-shadow-md">
-                Watch anywhere. Enter an TMBD ID to start streaming. <a class="underline decoration-red-500 hover:text-red-400 transition" href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">TMBD</a>.
+                Watch anywhere. Enter an TMBD ID or search for a movie/show to start streaming. <a class="underline decoration-red-500 hover:text-red-400 transition" href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">TMBD</a>.
             </p>
             
             <!-- Toggle Switch -->
-            <!-- Reduced width to 220px for a more compact look -->
             <div class="inline-grid grid-cols-2 w-[220px] glass-panel rounded-full p-1.5 relative">
-                <!-- Slider Background -->
                 <div id="slider-bg" class="absolute top-1.5 left-1.5 w-[calc(50%-6px)] h-[calc(100%-12px)] bg-red-600 rounded-full transition-transform duration-300 ease-out shadow-[0_0_15px_rgba(229,9,20,0.5)]"></div>
                 
                 <button onclick="switchMode('movie')" id="btn-movie" class="relative z-10 py-2 rounded-full text-sm font-bold text-white transition-colors duration-300 text-center">Movies</button>
@@ -143,16 +135,15 @@
 
             <!-- Glass Card Container -->
             <div class="glass-panel p-8 md:p-10 rounded-3xl mx-auto w-full max-w-2xl relative overflow-hidden group">
-                <!-- Shine effect on card -->
                 <div class="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 transition-all duration-1000 group-hover:left-[100%]"></div>
                 
                 <!-- Movie Form -->
-                <div id="movie-form" class="flex flex-col md:flex-row gap-4 transition-all duration-300">
+                <div id="movie-form" class="flex flex-col md:flex-row gap-4 transition-all duration-300 relative">
                     <div class="relative w-full group/input">
-                        <input type="number" id="movieId" placeholder=" " class="glass-input w-full p-4 rounded-xl h-14 text-lg peer placeholder-transparent">
-                        <label class="absolute left-4 top-4 text-gray-400 text-sm transition-all duration-200 peer-focus:-top-2.5 peer-focus:left-2 peer-focus:text-red-400 peer-focus:text-xs peer-focus:bg-[#1a1a1a] peer-focus:px-2 peer-focus:rounded peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-not-placeholder-shown:-top-2.5 peer-not-placeholder-shown:left-2 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:bg-[#1a1a1a] peer-not-placeholder-shown:px-2 peer-not-placeholder-shown:rounded pointer-events-none">TMDB ID</label>
-                        <!-- Added original placeholder as hint below or inside via JS, but glass UI works best with floating labels. 
-                             Adding the original text "e.g. 299534 (Avengers)" as a placeholder attribute for when focused -->
+                        <input type="text" id="movieId" placeholder=" " class="glass-input w-full p-4 rounded-xl h-14 text-lg peer placeholder-transparent" autocomplete="off">
+                        <label class="absolute left-4 top-4 text-gray-400 text-sm transition-all duration-200 peer-focus:-top-2.5 peer-focus:left-2 peer-focus:text-red-400 peer-focus:text-xs peer-focus:bg-[#1a1a1a] peer-focus:px-2 peer-focus:rounded peer-placeholder-shown:top-4 peer-placeholder-shown:text-lg peer-not-placeholder-shown:-top-2.5 peer-not-placeholder-shown:left-2 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:bg-[#1a1a1a] peer-not-placeholder-shown:px-2 peer-not-placeholder-shown:rounded pointer-events-none">TMDB ID or Search</label>
+                        <!-- Search results container -->
+                        <div id="movie-search-results" class="absolute top-full mt-1 w-full bg-black/80 text-white rounded-md shadow-lg z-50 max-h-60 overflow-y-auto hidden"></div>
                     </div>
                     <button onclick="playContent('movie')" class="glass-btn text-white text-xl font-bold px-8 py-3 rounded-xl h-14 flex items-center justify-center gap-2 transition transform active:scale-95 hover:brightness-110 min-w-[140px]">
                         <span>Play</span>
@@ -164,11 +155,12 @@
                 </div>
 
                 <!-- TV Form -->
-                <div id="tv-form" class="hidden flex flex-col gap-4">
+                <div id="tv-form" class="hidden flex flex-col gap-4 relative">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="relative w-full">
-                            <input type="number" id="showId" placeholder="ID (e.g. 1399)" class="glass-input w-full p-3 rounded-xl h-12 text-center text-white placeholder-gray-500 font-mono">
-                            <div class="text-[10px] text-gray-500 mt-1 text-center tracking-widest uppercase">Show ID</div>
+                            <input type="text" id="showId" placeholder=" " class="glass-input w-full p-3 rounded-xl h-12 text-center text-white placeholder-gray-500 font-mono" autocomplete="off">
+                            <label class="absolute left-2 top-3 text-gray-400 text-xs pointer-events-none">Show ID or Name</label>
+                            <div id="tv-search-results" class="absolute top-full mt-1 w-full bg-black/80 text-white rounded-md shadow-lg z-50 max-h-60 overflow-y-auto hidden"></div>
                         </div>
                         <div class="relative w-full">
                             <input type="number" id="season" placeholder="Seas." class="glass-input w-full p-3 rounded-xl h-12 text-center text-white placeholder-gray-500 font-mono">
@@ -188,15 +180,13 @@
 
         <!-- Video Player Section -->
         <div id="player-wrapper" class="w-full max-w-6xl mt-16 hidden fade-in z-20">
-            <!-- Screen Glare/Reflection Effect -->
             <div class="glass-panel p-1 rounded-2xl relative shadow-[0_20px_60px_-10px_rgba(0,0,0,0.8)]">
                 <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent rounded-2xl pointer-events-none z-30"></div>
                 <div class="relative w-full pt-[56.25%] bg-black rounded-xl overflow-hidden border border-white/5">
-                    <iframe id="player" class="absolute top-0 left-0 w-full h-full z-10" src="" frameborder="0" allowfullscreen allow="encrypted-media"></iframe>
+                    <iframe id="player" class="absolute top-0 left-0 w-full h-full z-10" src="" frameborder="0" allowfullscreen allow="encrypted-media" loading="lazy"></iframe>
                 </div>
             </div>
 
-            <!-- Terminal/Console Log -->
             <div class="mt-6 glass-panel rounded-xl overflow-hidden border border-gray-800/50">
                 <div class="bg-black/40 px-4 py-2 border-b border-white/5 flex items-center justify-between">
                     <div class="flex gap-1.5">
@@ -230,10 +220,9 @@
     </div>
 
     <script>
-        // Update input placeholder on load to match original
         document.getElementById('movieId').setAttribute('placeholder', 'e.g. 299534 (Avengers)');
 
-        // --- UI Logic ---
+        // Toggle UI
         function switchMode(mode) {
             const slider = document.getElementById('slider-bg');
             const movieBtn = document.getElementById('btn-movie');
@@ -247,31 +236,26 @@
                 movieBtn.classList.remove('text-gray-400');
                 tvBtn.classList.remove('text-white');
                 tvBtn.classList.add('text-gray-400');
-
                 movieForm.classList.remove('hidden');
                 movieForm.classList.add('flex');
                 tvForm.classList.add('hidden');
             } else {
-                // Now translating by 100% of the slider's own width (which is 104px)
-                // This positions it perfectly in the second column slot.
                 slider.style.transform = 'translateX(100%)'; 
                 tvBtn.classList.add('text-white');
                 tvBtn.classList.remove('text-gray-400');
                 movieBtn.classList.remove('text-white');
                 movieBtn.classList.add('text-gray-400');
-
                 tvForm.classList.remove('hidden');
                 movieForm.classList.add('hidden');
                 movieForm.classList.remove('flex');
             }
         }
 
-        // --- Logic ---
+        // Error Modal
         function showError(msg) {
             document.getElementById('errorText').innerText = msg;
             const modal = document.getElementById('errorModal');
             modal.classList.remove('hidden');
-            // Tiny animation
             modal.querySelector('div').classList.remove('scale-95', 'opacity-0');
             modal.querySelector('div').classList.add('scale-100', 'opacity-100');
         }
@@ -280,40 +264,29 @@
             document.getElementById('errorModal').classList.add('hidden');
         }
 
+        // Play Content
         function playContent(type) {
             let src = '';
             
             if (type === 'movie') {
                 const id = document.getElementById('movieId').value.trim();
-                if (!id) {
-                    showError('Please enter a valid Movie ID, kitten.');
-                    return;
-                }
+                if (!id) { showError('Please enter a valid Movie ID, kitten.'); return; }
                 src = `https://player.videasy.net/movie/${id}?color=E50914&overlay=true`;
                 logMessage(`Loading Movie ID: ${id}`);
             } else if (type === 'tv') {
                 const id = document.getElementById('showId').value.trim();
                 const season = document.getElementById('season').value;
                 const episode = document.getElementById('episode').value;
-                
-                if (!id || !season || !episode) {
-                    showError('Please fill in Show ID, Season, and Episode, kitten.');
-                    return;
-                }
+                if (!id || !season || !episode) { showError('Please fill in Show ID, Season, and Episode, kitten.'); return; }
                 src = `https://player.videasy.net/tv/${id}/${season}/${episode}?color=E50914&episodeSelector=true&overlay=true&nextEpisode=true`;
                 logMessage(`Loading Show ID: ${id} | S${season}:E${episode}`);
             }
 
             const playerFrame = document.getElementById('player');
             playerFrame.src = src;
-
             const container = document.getElementById('player-wrapper');
             container.classList.remove('hidden');
-            
-            // Smooth scroll to player
-            setTimeout(() => {
-                container.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
+            setTimeout(() => { container.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
         }
 
         function logMessage(text) {
@@ -325,13 +298,60 @@
             messageArea.prepend(div);
         }
 
-        // Listen for player events
-        window.addEventListener("message", function (event) {
-            if (typeof event.data === "string") {
-                try {
-                    const data = JSON.parse(event.data);
+        // TMDB API
+        const tmdbApiKey = 'fca66bcc048608a938d386fc1746385b';
+
+        async function searchTMDB(query, type='movie') {
+            if (!query) return [];
+            const url = `https://api.themoviedb.org/3/search/${type}?api_key=${tmdbApiKey}&query=${encodeURIComponent(query)}`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                return data.results || [];
+            } catch(e){ console.error(e); return []; }
+        }
+
+        // Movie Search
+        const movieInput = document.getElementById('movieId');
+        const movieResults = document.getElementById('movie-search-results');
+        movieInput.addEventListener('input', async () => {
+            const query = movieInput.value;
+            if(query.length < 2) { movieResults.classList.add('hidden'); return; }
+            const results = await searchTMDB(query, 'movie');
+            if(results.length===0){ movieResults.innerHTML='<div class="px-3 py-2 text-gray-400">No results found</div>'; movieResults.classList.remove('hidden'); return;}
+            movieResults.innerHTML = results.map(r=>`<div class="px-3 py-2 cursor-pointer hover:bg-red-600/30 transition" data-id="${r.id}">${r.title} (${r.release_date?.slice(0,4)||'N/A'})</div>`).join('');
+            movieResults.classList.remove('hidden');
+            movieResults.querySelectorAll('div[data-id]').forEach(el=>{
+                el.addEventListener('click',()=>{ movieInput.value=el.dataset.id; movieResults.classList.add('hidden'); playContent('movie'); });
+            });
+        });
+
+        document.addEventListener('click',(e)=>{if(!movieInput.contains(e.target) && !movieResults.contains(e.target)) movieResults.classList.add('hidden');});
+
+        // TV Search
+        const tvInput = document.getElementById('showId');
+        const tvResults = document.getElementById('tv-search-results');
+        tvInput.addEventListener('input', async () => {
+            const query = tvInput.value;
+            if(query.length<2){ tvResults.classList.add('hidden'); return; }
+            const results = await searchTMDB(query,'tv');
+            if(results.length===0){ tvResults.innerHTML='<div class="px-3 py-2 text-gray-400">No results found</div>'; tvResults.classList.remove('hidden'); return;}
+            tvResults.innerHTML = results.map(r=>`<div class="px-3 py-2 cursor-pointer hover:bg-red-600/30 transition" data-id="${r.id}">${r.name} (${r.first_air_date?.slice(0,4)||'N/A'})</div>`).join('');
+            tvResults.classList.remove('hidden');
+            tvResults.querySelectorAll('div[data-id]').forEach(el=>{
+                el.addEventListener('click',()=>{ tvInput.value=el.dataset.id; tvResults.classList.add('hidden'); });
+            });
+        });
+
+        document.addEventListener('click',(e)=>{if(!tvInput.contains(e.target) && !tvResults.contains(e.target)) tvResults.classList.add('hidden');});
+
+        // Player message logging
+        window.addEventListener("message", function(event){
+            if(typeof event.data==="string"){
+                try{
+                    const data=JSON.parse(event.data);
                     logMessage(`Progress: ${data.progress}% (${Math.floor(data.timestamp)}s)`);
-                } catch (e) {}
+                }catch(e){}
             }
         });
     </script>
